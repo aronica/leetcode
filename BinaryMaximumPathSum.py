@@ -56,6 +56,24 @@ class Solution:
                 node = None
         return maximum
 
+    #Binary Tree maximum path sum
+    def maxPathSum(self, root):
+        if root is None:
+            return 0
+        if root.left is None and root.right is None:
+            return root.val
+        left = None
+        right = None
+        if root.left is not None:
+            left = self.maxPathSum(root.left)
+        if root.right is not None:
+            right = self.maxPathSum(root.right)
+        if left is None and right is not None:
+            return max(root.val,root.val+right,right)
+        elif left is not None and right is None:
+            return max(root.val,root.val+left,left)
+        return max(root.val,root.val+left,root.val+right,root.val+left+right,left,right)
+
 root = TreeNode.fromList([-2,-1])
 s = Solution()
 print s.maxPathSum(root)
