@@ -1,0 +1,20 @@
+class Solution:
+    # @param s, a string
+    # @return a list of strings
+    def findRepeatedDnaSequences(self, s):
+        if s is None or len(s)<=10:return []
+        result = []
+        dic = dict()
+        for i in xrange(0,len(s)-9,1):
+            if s[i:i+10] in dic and dic[s[i:i+10]]==1:
+                result.append(s[i:i+10])
+                dic[s[i:i+10]] += 1
+            elif s[i:i+10] not in dic:
+                dic[s[i:i+10]] = 1
+            else:
+                dic[s[i:i+10]] += 1
+        return result
+
+if __name__=="__main__":
+    s = Solution()
+    print s.findRepeatedDnaSequences("A"*12)

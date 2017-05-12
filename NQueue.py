@@ -3,29 +3,30 @@ import time
 class Solution:
     # @return a list of lists of string
     def solveNQueens(self, n):
-        def __calc__(tmp,tmpre,result,index):
+        def __calc__(tmp,result,index,se):
             lens = len(tmp)
             for i in xrange(n):
-                if i not in tmp and (len(tmp)==0 or abs(tmp[-1]-i)!=1):
+                if i not in se and (len(tmp)==0 or abs(tmp[-1]-i)!=1):
                     tmp.append(i)
-                    li = []
-                    for m in xrange(i):
-                        li.append(".")
-                    li.append("Q")
-                    for m in xrange(i+1,n):
-                        li.append(".")
-                    tmpre.append("".join(li))
+                    se.add(i)
                     if index+1==n:
-                        result.append(tmpre)
+                        result.append(tmp)
                     else:
-                        __calc__(tmp,tmpre,result,index+1)
+                        __calc__(tmp,result,index+1,se)
+                    se.discard(i)
                 tmp = tmp[0:lens]
-                tmpre = tmpre[0:lens]
         if n<4:
             return []
         result = []
-        __calc__([],[],result,0)
+        __calc__([],result,0,set())
         newresult = []
+        for i in result:
+            res = [["." for m in xrange(n)] for a in xrange(n)]
+            j = 0
+            while j<n:
+                res[j][i[j]]="Q"
+                j+=1
+            newresult.append(["".join(m) for m in res])
         return newresult
 if __name__=="__main__":
     s = Solution()

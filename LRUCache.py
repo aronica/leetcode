@@ -1,37 +1,45 @@
 __author__ = 'fafu'
-from collections import deque
-class LRUCache:
+import time
 
+
+class LRUCache:
     # @param capacity, an integer
     def __init__(self, capacity):
         self.capacity = capacity
         self.cache = dict()
-        self.indexcache = dict()
-        self.last_get_index = 0
-        self.last_invalid_index = 0
-
-
+        self.queue = []
 
     # @return an integer
     def get(self, key):
         if key in self.cache:
             val = self.cache[key]
-            self.last_get_index += 1
-            self.cache[key] = (val[0],self.last_get_index)
+            self.cache[key] = (val, time.time())
+            self.queue.append(key, time.self.cache[key][1])
+            if len(self.queue) >= self.capacity * 2:
+                i = 0
+                while i < (self.capacity):
+                    if self.queue[i][1] != self.cache[self.queue[i][1]]:
+                        self.queue.pop(i)
+                    else:
+                        i += 1
             return val[0]
         return -1
-
 
     # @param key, an integer
     # @param value, an integer
     # @return nothing
     def set(self, key, value):
-        self.last_get_index += 1
-        if len(self.cache)<self.capacity:
-            self.cache[key] = (value,self.last_get_index)
-        else:
+        self.get(key)
+        self.cache[key] = (value, time.time())
+        self.queue.append((key, time.self.cache[key][1]))
+        if len(self.cache) > self.capacity:
+            while True:
+                obj = self.queue.pop(0)
+                if self.cache[obj[0]][1] == obj[1]:
+                    del self.cache[obj[0]]
+                    break
 
-            self.cache[key] = (value,self.last_get_index)
+
 
 
 
