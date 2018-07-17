@@ -1,56 +1,40 @@
+"""
+Given an unsorted integer array, find the smallest missing positive integer.
+
+Example 1:
+
+Input: [1,2,0]
+Output: 3
+Example 2:
+
+Input: [3,4,-1,1]
+Output: 2
+Example 3:
+
+Input: [7,8,9,11,12]
+Output: 1
+Note:
+
+Your algorithm should run in O(n) time and uses constant extra space.
+"""
 __author__ = 'fafu'
+
+
 class Solution:
-    def firstMissingPositive(self, A):
-        if A is None or len(A)==0 or len(A)==1 and A[0]==0:
-            return 1
-        if len(A)==1 and len(A)==1:
-            return 2
-        elif len(A)==1 and len(A)>1:
-            return len(A)-1
-
-        minval = None
-        maxval = 0
-        j = len(A)-1
-        i = 0
-        while i<=j:
-            while A[j]<=0:
-                j-= 1
-            if A[i]<=0:
-                tmp = A[j]
-                A[j] = A[i]
-                A[i] = tmp
-                j -= 1
+    def firstMissingPositive(self, nums):
+        i, n = 0, len(nums)
+        while i < n:
+            if nums[i] > 0 and nums[i] <= n and nums[i] != nums[nums[i] - 1]:
+                # swap
+                temp = nums[i]
+                nums[i] = nums[nums[i] - 1]
+                nums[temp - 1] = temp
             else:
-                if minval is None or minval>A[i]:
-                    minval = A[i]
-                if A[i]>maxval:
-                    maxval = A[i]
                 i += 1
-
-        if maxval-minval == j:
-            if minval == 1:
-                return maxval+1
-            return minval-1
-        if maxval==minval:
-            if minval == 1:
-                return maxval+1
-            return minval-1
-        i = 0
-        newj = j
-        while i<=j:
-            if A[i]-minval==i:
-                i+= 1
-            elif A[i]-minval>i:
-                tmp = A[i]
-                idx= A[i]-minval
-                if A[idx]>0:
-                    A[i] = A[idx]
-                else:
-                    A[i] = None
-                    i+=1
-                A[idx]= tmp
-        i = 0
-        while i<=j:
-            if A[i]!=i+minval:
-                return i+minval
-            i+=1
+        for i, v in enumerate(nums):
+            if v != i + 1:
+                return i + 1
+        return n + 1
+nums=[3,4,-1,1]
+s = Solution()
+s.firstMissingPositive(nums)

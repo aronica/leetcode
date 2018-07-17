@@ -1,32 +1,41 @@
+"""
+Given an array of non-negative integers, you are initially positioned at the first index of the array.
+
+Each element in the array represents your maximum jump length at that position.
+
+Your goal is to reach the last index in the minimum number of jumps.
+
+Example:
+
+Input: [2,3,1,1,4]
+Output: 2
+Explanation: The minimum number of jumps to reach the last index is 2.
+    Jump 1 step from index 0 to 1, then 3 steps to the last index.
+Note:
+
+You can assume that you can always reach the last index.
+"""
+
+
 class Solution:
-    max_val = pow(2,31)
+
     def jump(self, A):
-        if A is None or len(A) == 0 or len(A)==1 or A[0]==len(A)-1:
+        if A is None or len(A) == 0 or len(A) == 1 or A[0] == len(A) - 1:
             return 0
-        if A[0]==0:
-            return -1
-        li = {0:0}
-        li.update({(1+i):1 for i in xrange(A[0])})
-        for i in xrange(1,len(A)-1):
-            if A[i] == 0:
-                continue
-            for j in xrange(1,min(A[i]+1,len(A)-i)):
-                if i+j in li:
-                    li[i+j] = min(li[i+j],li[i]+1)
-                else:
-                    li[i+j] = li[i]+1
-        if len(A)-1 in li:
-            return li[len(A)-1]
-        return -1
-if __name__=="__main__":
+        if A[0] == 0:
+            return 0
+        ret = 0
+        cur, last = 0, 0
+        i = 0
+        while i < len(A):
+            if i > last:
+                ret += 1
+                last = cur
+            cur = max(cur, i + A[i])
+            i += 1
+        return ret
+
+
+if __name__ == "__main__":
     s = Solution()
-    s.jump([1,1,1,2,1])
-                
-            
-            
-            
-            
-        
-
-
-    
+    print s.jump([1, 1, 1, 2, 1])
